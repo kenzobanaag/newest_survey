@@ -43,11 +43,13 @@ export const saveSurvey = (surveyObject, currentUser) => {
         
         if(surveyObject.surveyId === undefined || surveyObject.surveyId === "") {
             ApiCalls.postSurvey(surveyObject, currentUser).then(response => {
-				survId = response.data.id;
-                console.log("ID: " + response.data.id);
+				//survId = response.data.id;
+                //console.log("ID: " + response.data.id);
                 //window.location.href += "/"+survId;
-                console.log(window.location.href+"/"+survId)
-                alert("Survey saved!");
+                //console.log(window.location.href+"/"+survId)
+                //alert("Survey saved!");
+				survId = response.data.id;
+                window.location = "/create/"+survId;
                 return {
                     type: SAVE_SURVEY
                 }
