@@ -1,6 +1,5 @@
 import * as surveyActions from '../actions/surveyActions'
 
-
 const initialState =  {
     title: "", 
     questions : [],
@@ -18,10 +17,11 @@ const reducer = (state = initialState, action) => {
             ...state,
             title : action.survey.title,
             creationDate : action.survey.creationTime,
-            isPublished : action.survey.published,
+            published : action.survey.published,
             surveyId : action.survey._id,
+            owner: action.survey.owner,
             questions : action.survey.questions.map(element => ({
-                ...element, questionId: element._id
+                ...element, questionId: element._id, _id: element._id
             })),
         }
 
@@ -30,7 +30,7 @@ const reducer = (state = initialState, action) => {
             ...state,
             title : "",
             creationDate : "",
-            isPublished : "",
+            published : "",
             surveyId : "",
             questions : [],
         }

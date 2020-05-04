@@ -2,7 +2,7 @@ import * as analyticsActions from '../actions/analyticsActions';
 
 const intialState = {
     responses: [],
-    currentSurveyId: ""
+    currentSurveyId: "",
 }
 
 const reducer = (state = intialState, action) => {
@@ -10,7 +10,7 @@ const reducer = (state = intialState, action) => {
         case analyticsActions.LOAD_RESPONSES:
             return {
                 ...state,
-                responses: action.responses
+                responses: action.responses,
             }
         case analyticsActions.CLEAR_RESPONSES:
             return {
@@ -25,18 +25,5 @@ const reducer = (state = intialState, action) => {
         default: return state;
     }
 }
-
-//call a function that parses each answer. 
-
-// const parseResponses = (responsesObject) => {
-//     responsesObject.map(response => {
-//         response.map(answerList => {
-//             answerList.answers.map(eachAnswer => {
-//                 if(eachAnswer.answerType === "CommentBoxAnswer")
-
-//             })
-//         })
-//     })
-// }
 
 export default reducer;

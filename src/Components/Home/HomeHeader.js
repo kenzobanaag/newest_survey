@@ -10,9 +10,7 @@ import {Link} from 'react-router-dom'
 import LOGO from '../Assets/cap_logo.png'
 
 //redux
-import { useDispatch, useSelector } from "react-redux";
-import * as actionTypes from '../../store/actions/actions'
-import * as surveyActions from '../../store/actions/surveyActions'
+import { useSelector } from "react-redux";
 
 
 const useStyles = makeStyles(theme => ({
@@ -43,11 +41,9 @@ function HomeHeader() {
 
     const classes = useStyles();
 
-    const currentUser = useSelector(state => state.appWide.current_user);
+    const currentUser = useSelector(state => state.user.userEmail);
 
     const surveys = useSelector(state => state.home.surveys);
-
-    const dispatch = useDispatch();
 
     const printStatus= (status) => {
         if(status.length === 0) {
@@ -61,16 +57,11 @@ function HomeHeader() {
         }
     }
 
-    const switchThePage = () => {
-        dispatch(actionTypes.switchPage(1))
-        dispatch(surveyActions.clearSurvey());
-    }
-
     return (
         <Paper className={classes.root}>
                 <div className={classes.texts}>
                     <Typography variant="h2" gutterBottom >
-            Welcome Back, <span>{currentUser} </span>
+            Welcome, <span>{currentUser} </span>
             <img src={LOGO} height={55} width={55} />
                     </Typography>
                     {/* Comment out this line later */}
@@ -78,8 +69,11 @@ function HomeHeader() {
                     <Divider className={classes.distance} />
                     <Typography variant="overline" gutterBottom>
                     </Typography>
-                    <Button color="primary" variant="contained" to="/create" component={Link} 
-                    onClick={() => switchThePage()}>
+                    <Button 
+                    style={{background: 'linear-gradient(45deg, #644e5b 30%, #314455 90%)', color: 'white'}} 
+                    variant="contained"
+                     to="/create" 
+                     component={Link}>
                         Create A New Survey
                     </Button>
                     <div className={classes.distance}></div>

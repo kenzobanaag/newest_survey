@@ -10,6 +10,8 @@ import axios from 'axios'
 
 const LOCAL_URL = "https://guerilla-backend.azurewebsites.net/api/";
 
+const LOGIN_URL = "https://guerilla-backend.azurewebsites.net/";
+
 const USER = "user/";
 
 const SURVEY = "survey/";
@@ -20,12 +22,63 @@ const EMBED = "embed/";
 
 class ApiCall {
 
-    static postSurvey(surveyObject,id) {
-        return (axios.post(LOCAL_URL + SURVEY + USER + id, surveyObject));
+
+    static login(userObject) {
+        return (axios.post(LOGIN_URL + "login/", userObject));
     }
 
-    static updateSurvey(surveyObject,id) {
-        return (axios.put(LOCAL_URL + SURVEY + SURVEY + id, surveyObject));
+
+    static signup(userObject) {
+        return (axios.post(LOGIN_URL + "login/register", userObject));
+    }
+
+
+    static newPostSurvey(surveyObject, token) {
+        return (axios.post(LOCAL_URL + SURVEY + USER, surveyObject,{
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          }))
+    }
+
+    static newUpdateSurvey(surveyObject, token) {
+        return (axios.put(LOCAL_URL + SURVEY + SURVEY + surveyObject.surveyId, surveyObject,{
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+        }))
+    }
+
+    static newDeleteSurvey(token, id) {
+        return (axios.delete(LOCAL_URL + SURVEY + SURVEY + id,{
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+        }))
+    }
+
+    static newGetASurvey(surveyId, token) {
+        return (axios.get(LOCAL_URL + SURVEY + SURVEY + surveyId, {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+        }))
+    }
+    
+    static newGetAllSurveys(token) {
+        return (axios.get(LOCAL_URL + SURVEY + USER, {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          }))
+    }
+
+    static newGetAllSurveyResponses(surveyId, token) {
+        return (axios.get(LOCAL_URL + RESPONSE + SURVEY + surveyId, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+              }
+        }));
     }
 
     static getEmbedCode(id) {
@@ -34,11 +87,6 @@ class ApiCall {
         "<script type=\"text/javascript\" id=\"embedID\" data-name=\"" + id + "\" src=\"https://guerilla-backend.azurewebsites.net/embed/main.js\"></script>"
         );
     }
-
-    static deleteSurvey(id) {
-        return (axios.delete(LOCAL_URL + SURVEY + SURVEY + id));
-    }
-
 
     /*
         Gets all survey responses from an id
@@ -66,6 +114,21 @@ class ApiCall {
         return (axios.get(LOCAL_URL + RESPONSE + RESPONSE + responseId));
     }
 
+    /*********************************************************************************************/
+    /*
+        Deprecated stuff
+    */
+   
+    /*
+        Gets all the surveys a user has
+        @param: userId
+
+        "TestPacito"
+    */
+   static getAllSurveys(userId) {
+    return (axios.get(LOCAL_URL + SURVEY + USER + userId));
+    }
+
     /*
         Gets a single survey
         @param: surveyId
@@ -76,18 +139,21 @@ class ApiCall {
         "5dec493cf525a2415c89c290"
     */
     static getASurvey(surveyId) {
-        return (axios.get(LOCAL_URL + SURVEY + SURVEY + surveyId));
+    return (axios.get(LOCAL_URL + SURVEY + SURVEY + surveyId));
     }
 
-    /*
-        Gets all the surveys a user has
-        @param: userId
-
-        "TestPacito"
-    */
-    static getAllSurveys(userId) {
-        return (axios.get(LOCAL_URL + SURVEY + USER + userId));
+    static postSurvey(surveyObject,id) {
+        return (axios.post(LOCAL_URL + SURVEY + USER + id, surveyObject));
     }
+
+    static deleteSurvey(id) {
+        return (axios.delete(LOCAL_URL + SURVEY + SURVEY + id));
+    }
+
+    static updateSurvey(surveyObject,id) {
+        return (axios.put(LOCAL_URL + SURVEY + SURVEY + id, surveyObject));
+    }
+
 }
 
 export default ApiCall;

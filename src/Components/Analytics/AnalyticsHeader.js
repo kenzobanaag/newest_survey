@@ -54,17 +54,17 @@ function AnalyticsHeader() {
                     {title !== undefined ? getSurveyTitle(title) : "Analytics"}
                 </Typography>
 
-                <Divider className={classes.distance}/>
+                {/* <Divider className={classes.distance}/> */}
 
-                <React.Fragment>
+                {/* <React.Fragment>
                     <Grid container spacing={1} direction="column" alignItems="flex-start">
                         <Grid item>     
                             <Button 
-                            /*
+                            {/*
                             TODO:
                             onClick={  }
-                            */
-                            variant="contained"
+                            */}
+                            {/* variant="contained"
                             color="secondary"
                             size="large"
                             disabled={true}
@@ -97,8 +97,7 @@ function AnalyticsHeader() {
                             className={classes.marginAlign}>Survey Preview</Button>
                         </Grid>
                     </Grid>
-                </React.Fragment>
-
+                </React.Fragment> */}
                 <div className={classes.distance}></div>
                 {/*<Divider className={classes.distance}/>
                 <Typography variant="overline" guttermBottom>

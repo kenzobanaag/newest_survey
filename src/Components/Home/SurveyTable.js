@@ -77,13 +77,16 @@ function SurveyTable() {
 
     const homeTest = useSelector(state => state.home);
 
+    const userAuth = useSelector(state=> state.user.authToken)
+
 
     const switchPage = (url, id, page) => {
         history.push(
             url + id
         )
         //change state of currentPage
-        dispatch(actionTypes.switchPage(page));
+        //watch out for this again
+        //dispatch(actionTypes.switchPage(page));
     }
 
     return (
@@ -109,7 +112,7 @@ function SurveyTable() {
                                 tooltip: 'Delete Survey',
                                 onClick: (event, rowData) => {
                                     if (window.confirm(`Delete "${rowData.title}" survey?`))
-                                        dispatch(homeActions.deleteSurvey(rowData._id))
+                                        dispatch(homeActions.deleteSurvey(userAuth, rowData._id))
                                 }
                             },
                         ]}

@@ -14,9 +14,9 @@ export const saveSurveys = (surveyVal) => {
     Called by the HomePage, this loads all the surveys from the current user
     and attaches it to the state. 
 */
-export const loadSurveys = (id) => {
+export const loadSurveys = (token) => {
     return dispatch => {
-        ApiCalls.getAllSurveys(id).then(response => {
+        ApiCalls.newGetAllSurveys(token).then(response => {
             console.log(response)
             if(response.data.result) {
                 dispatch(saveSurveys(response.data.data));
@@ -30,9 +30,9 @@ export const loadSurveys = (id) => {
     database first, then if that is successful it will delete
     the entry in the surveyList.
 */
-export const deleteSurvey = (id)  => {
+export const deleteSurvey = (token, id)  => {
     return dispatch => {
-        ApiCalls.deleteSurvey(id).then(response => {
+        ApiCalls.newDeleteSurvey(token, id).then(response => {
             console.log(response)
             if(response.data.result > 0) {
                 dispatch(storeDeletedSurveyId(id));

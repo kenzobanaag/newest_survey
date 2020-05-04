@@ -8,13 +8,18 @@ export const SET_CURRENT_SURVEY = "SET_CURRENT_SURVEY";
     Called by the analytics page to instantiate the state and populate the 
     survey responses if there are any.
 */
-export const loadResponses = (id) => {
+export const loadResponses = (id, token) => {
     return dispatch => {
-        ApiCalls.getAllSurveyResponses(id).then(response => {
+        ApiCalls.newGetAllSurveyResponses(id, token).then(response => {
             dispatch(clearResponses());
-            console.log(response)
+            //console.log(response.data.data)
             if (response.data.result) {
-                dispatch(saveResponses(response.data.data));
+                var responseData = response.data.data.map(element => ({
+                    answers: element.answers,
+                    responseId: element._id
+                }))
+
+                dispatch(saveResponses(responseData));
             }
             //answers array
             

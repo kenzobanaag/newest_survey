@@ -11,6 +11,7 @@ import reducer from './store/reducers/reducer'
 import homeReducer from './store/reducers/homeReducer';
 import analyticsReducer from './store/reducers/analyticsReducer';
 import surveyReducer from './store/reducers/surveyReducer'
+import userReducer from './store/reducers/userReducer'
 //async library
 import thunk from 'redux-thunk';
 
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
     home: homeReducer,
     analytics: analyticsReducer,
     create: surveyReducer,
+    user: userReducer,
 })
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

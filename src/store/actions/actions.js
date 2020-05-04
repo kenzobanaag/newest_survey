@@ -6,11 +6,20 @@ export const GET_MULTIPLE = "GET_MULTIPLE_TYPE";
 export const GET_STAR = "GET_STAR_TYPE";
 export const GET_TEXTFIELD = "GET_TEXTFIELD_TYPE";
 
+export const SET_AUTH = "SET_AUTH"
+
 
 export const switchPage = (value) => {
     return {
         type: SWITCH_PAGE,
         page_index: value
+    }
+}
+
+export const setAuthToken = (val) => {
+    return {
+        type: SET_AUTH,
+        token: val,
     }
 }
 

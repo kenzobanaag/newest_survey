@@ -6,7 +6,8 @@ const initialState = {
     //bad design, its not scalable
     choices: [],
     maxStars: 0,
-    charLimit: 0
+    charLimit: 0,
+    authToken: "",
 }
 
 const reducer = (state = initialState, action) => {
@@ -18,6 +19,12 @@ const reducer = (state = initialState, action) => {
                 //change the page index
                 page_index: action.page_index
             }
+        case actionTypes.SET_AUTH: 
+        return {
+            ...state,
+            authToken: action.token
+        }
+
         case actionTypes.GET_MULTIPLE: 
         {
             return {

@@ -54,9 +54,9 @@ function SurveyResultsTable() {
         //can we have the back end just say choice or answer or something, so we dont have to parse this
         columns: [
             { title: 'ResponseId', field: '_id' },
-            { title: 'Multiple Choice Answer', field: 'answers[0].MutltipleChoiceSelection' },
-            { title: 'Star Rating', field: 'answers[1].stars' },
-            { title: 'Comments', field: 'answers[2].text' },
+            // { title: 'Multiple Choice Answer', field: 'answers[0].MutltipleChoiceSelection' },
+            // { title: 'Star Rating', field: 'answers[1].stars' },
+            // { title: 'Comments', field: 'answers[2].text' },
         ],
     }
 
@@ -68,8 +68,9 @@ function SurveyResultsTable() {
                     <MaterialTable
                         title="Survey Responses"
                         columns={staticColumn.columns}
-                        data={responses} //parse this better
+                        //data={responses} //parse this better
                         icons={tableIcons}
+                        color="primary"
                     //not sure if this is needed since we dont have anything here, unless
                     //we want to single out each response. But probably not this iteration
                     // **WE SHOULD GET THE AVERAGE STARS THO** 

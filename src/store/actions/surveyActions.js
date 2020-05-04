@@ -1,5 +1,6 @@
 import ApiCalls from '../../Components/Axios/ApiCall'
 
+
 export const LOAD_SURVEY = "LOAD_SURVEY";
 export const SAVE_SURVEY = "SAVE_SURVEY";
 export const UPDATE_SURVEY = "UPDATE_SURVEY"
@@ -10,11 +11,11 @@ export const CLEAR_SURVEY = "CLEAR_SURVEY";
 export const GET_EMBED = "GET_EMBED";
 export const UPDATE_TITLE = "UPDATE_TITLE"
 
-export const loadSurvey = (id) => {
+export const loadSurvey = (id, token) => {
     return dispatch => {
-        ApiCalls.getASurvey(id)
+        ApiCalls.newGetASurvey(id, token)
             .then(response => {
-                console.log(response)
+                console.log(response.data.data)
                 dispatch(returnSurvey(response.data.data));
             }).catch(error => {
                 console.log(error)
@@ -37,27 +38,28 @@ export const clearSurvey = () => {
 
 //decide how were gonna save...
 //probably pass the survey object using the useSelector.
-export const saveSurvey = (surveyObject, currentUser) => {
+export const saveSurvey = (surveyObject, token) => {
     return dispatch => {
         let survId = "";
-        
-        if(surveyObject.surveyId === undefined || surveyObject.surveyId === "") {
-            ApiCalls.postSurvey(surveyObject, currentUser).then(response => {
-				//uses the base location.
-				survId = response.data.id;
-                window.location = "/create/"+survId;
-                return {
-                    type: SAVE_SURVEY
-                }
-            }) 
+
+        if (surveyObject.surveyId === undefined || surveyObject.surveyId === "") {
+            ApiCalls.newPostSurvey(surveyObject, token).then(response => {
+                survId = response.data.id;
+                alert("Survey saved!")
+                dispatch(loadSurvey(survId, token));
+            }).catch(error => {
+                console.log(error)
+            })
         }
         else {
-            //console.log("Gives an unhandled promise rejection warning on node, cannot read property _id of undef. Doesnt update")
-            console.log("Duplicate key error rn")
-            ApiCalls.updateSurvey(surveyObject, surveyObject.surveyId).then(response => {
-                //survId = response.data.split(" ")[0];
-                //window.location.href = "http://localhost:3000/create/"+survId;
-                console.log(response)
+            console.log("Update")
+            const filteredObject = {
+                ...surveyObject,
+                questions: surveyObject.questions.map(question => filterObject(question))
+            }
+            ApiCalls.newUpdateSurvey(filteredObject, token).then(response => {
+                alert("Changes saved!")
+                //console.log(JSON.stringify(filteredObject))
                 return {
                     type: UPDATE_SURVEY
                 }
@@ -68,59 +70,87 @@ export const saveSurvey = (surveyObject, currentUser) => {
     }
 }
 
-export const updateTitle = (title) => {
-    return {
-        type: UPDATE_TITLE,
-        surveyTitle: title
+/*
+    Filter the question object to remove the extra properties that are not needed in the backend
+*/
+const filterObject = (questions) => {
+    const newObject = {
+        prompt: questions.prompt,
+        questionType: questions.questionType,
     }
+
+    switch (questions.questionType) {
+        case "StarQuestion":
+            newObject.maxStars = (questions.maxStars === null || questions.maxStars === 0 ? 5 : questions.maxStars)  
+            break;
+        case "MultipleChoiceQuestion":
+            newObject.choices = questions.choices
+            break;
+        case "TextFieldQuestion":
+            newObject.charLimit = (questions.charLimit === null || questions.charLimit === 0 ? 140 : questions.charLimit)
+            break;
+        default:
+    }
+
+    if ('_id' in questions)
+                newObject._id = questions._id
+                
+    return newObject;
 }
 
-export const addQuestion = (newQuestion) => {
-    return {
-        type: ADD_QUESTION,
-        //whole question object
-        question: newQuestion
+    export const updateTitle = (title) => {
+        return {
+            type: UPDATE_TITLE,
+            surveyTitle: title
+        }
     }
-}
 
-//accept the id, then edit that item
-export const editQuestion = (newValue) => {
-    // return {
-    //     type: EDIT_QUESTION,
-    //     //either pass new state value or pass id
-    //     questionId: newValue.questionId,
-    //     newQuestion: newValue
-    // }
-    return dispatch => {
-        dispatch(deleteQuestion(newValue.questionId));
-        dispatch(addQuestion(newValue));
+    export const addQuestion = (newQuestion) => {
+        return {
+            type: ADD_QUESTION,
+            //whole question object
+            question: newQuestion
+        }
     }
-    
-}
 
-//accept the id then delete that item from the state list
-export const deleteQuestion = (id) => {
-    return {
-        type: DELETE_QUESTION,
-        questionId: id
+    //accept the id, then edit that item
+    export const editQuestion = (newValue) => {
+        // return {
+        //     type: EDIT_QUESTION,
+        //     //either pass new state value or pass id
+        //     questionId: newValue.questionId,
+        //     newQuestion: newValue
+        // }
+        return dispatch => {
+            dispatch(deleteQuestion(newValue.questionId));
+            dispatch(addQuestion(newValue));
+        }
+
     }
-}
 
-//I was thinking we could call this on any of the items that need extra text
-//basically, pass 2 values, like the questionId, then the extra prompt.
-export const addQuestionExtras = () => {
-    return {
-        type: "TEST"
+    //accept the id then delete that item from the state list
+    export const deleteQuestion = (id) => {
+        return {
+            type: DELETE_QUESTION,
+            questionId: id
+        }
     }
-}
+
+    //I was thinking we could call this on any of the items that need extra text
+    //basically, pass 2 values, like the questionId, then the extra prompt.
+    export const addQuestionExtras = () => {
+        return {
+            type: "TEST"
+        }
+    }
 
 
-export const getEmbed = (id) => {
-    return dispatch => {
-        if(id !== undefined)
-            alert(ApiCalls.getEmbedCode(id));
+    export const getEmbed = (id) => {
+        return dispatch => {
+            if (id !== undefined)
+                alert(ApiCalls.getEmbedCode(id));
             return {
                 type: GET_EMBED
             }
+        }
     }
-}

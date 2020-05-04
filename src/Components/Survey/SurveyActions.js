@@ -43,7 +43,7 @@ export default function SurveyActions(props) {
 
   const dispatch = useDispatch();
 
-  const currentUser = useSelector(state => state.appWide.current_user)
+  const currentUser = useSelector(state => state.user.authToken)
 
   const newSurveyObject = useSelector(state => state.create)
 
@@ -97,15 +97,13 @@ export default function SurveyActions(props) {
             id="surveyName"
             className={classes.textField}
             margin="normal"
-            //Something about this version not having a variant prop??
             fullWidth
+            variant="outlined"
             label="Survey Name"
             helperText={reqHelperText}
-            //placeholder = {survey.title}
             value={newSurveyObject.title === undefined ? "": newSurveyObject.title}
-            //defaultValue={survey.title === undefined ? "": survey.title} im so fucking stupid
             onChange={() => dispatch(surveyActions.updateTitle(
-              newSurveyObject.title = document.getElementById("surveyName").value))
+            newSurveyObject.title = document.getElementById("surveyName").value))
               }
           />
        </React.Fragment>

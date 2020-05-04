@@ -9,10 +9,9 @@ import SurveyIcon from '@material-ui/icons/Assignment';
 import AnalyticsIcon from '@material-ui/icons/Assessment';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import SurveyPage from '../Survey/SurveyCreationPage';
-import HomePage from '../Home/HomePage';
-import Container from '@material-ui/core/Container';
-import AnalyticsPage from '../Analytics/AnalyticsPage';
+import Toolbar from '@material-ui/core/Toolbar'
+import AccountCircle from '@material-ui/icons/AccountCircle'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import { Route, Link, Redirect } from 'react-router-dom';
 
@@ -57,11 +56,17 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     backgroundColor: theme.palette.primary.paper,
   },
+  searchIcon: {
+    padding: theme.spacing(0, 10),
+  },
+  gradient: {
+    background: 'linear-gradient(45deg, #644e5b 30%, #314455 90%)',
+    textAlign: "center",
+  },
 }));
 
 export default function ScrollableTabsButtonForce() {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
 
   const pageIndex = useSelector(state => state.appWide);
 
@@ -77,29 +82,12 @@ export default function ScrollableTabsButtonForce() {
     //setValue(newValue);
   };
 
-  const testHandler = () => {
-
-  }
-
-  const renderPage = (page) => {
-    return(
-      <Container maxWidth="lg">
-        <Container maxWidth="lg">
-        {page}
-        </Container>
-      </Container>
-    );
-  }
-
-  const getCurrentValue = (currIndex) => {
-      console.log("Index: " + currIndex);
-  }
 
   return (
     <div className={classes.root}>
-      {/* <Redirect exact from="/" to="home" /> */}
-      <AppBar position="static" color="primary">
-        {/*<Container maxWidth="lg"> */}
+      <AppBar position="static" className={classes.gradient} >
+        <Toolbar>
+          <div>
           <Tabs
           //value should now be a useSelector or someshit
             value={pageIndex.page_index}
@@ -108,37 +96,28 @@ export default function ScrollableTabsButtonForce() {
             scrollButtons="on"
             aria-label="scrollable force tabs example"
           >
-            {/* Doing it this way reloads the page all the time 
-
-            <Tab label="Home" href="/home" icon={<HomeIcon />} {...a11yProps(0)} />   
-            
-            FIXME 
-              Fix the margins of each rendered page. It looks aweful
-            */}
             {/*Tabs show the icons*/ }
-            <Tab label="Home" to="/" component={Link} icon={<HomeIcon />} {...a11yProps(0)} />
+            <Tab label="Home" to="/home" component={Link} icon={<HomeIcon />} {...a11yProps(0)} />
             <Tab label="Survey Creation" to="/create" component={Link} icon={<SurveyIcon />} {...a11yProps(1)} />
             <Tab label="Analytics" to="/analytics" component={Link} icon={<AnalyticsIcon />} {...a11yProps(2)} />
+            <Tab label="Log Out" to="/login" component={Link} icon={<ExitToAppIcon />} {...a11yProps(3)}/>
           </Tabs>
-        {/* </Container> */}
+          </div>
+          {/* {(
+            <div className={classes.searchIcon}>
+              <IconButton
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true" 
+                color="inherit"
+                edge="end"
+              >
+                <AccountCircle />
+              </IconButton>
+              </div>
+          )} */}
+          </Toolbar>
       </AppBar>
-
-      <Route path="/" exact component={HomePage}/>
-      <Route path="/create" component={SurveyPage}/>
-      <Route path="/analytics" component={AnalyticsPage}/>
-
-      
-        {/* THIS DOESNT CHANGE THE ROUTES IN THE URL BAR so its basically doing nothing
-        
-        <TabPanel value={value} index={0} >
-          <Link to='/home' exact component={HomePage}></Link>
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <Link to='/create' exact component={() => <SurveyPage />}></Link>
-        </TabPanel>
-        <TabPanel value={value} index={2} >
-          <Link to='/analytics' exact component={() => <AnalyticsPage />}></Link>
-        </TabPanel> */}
     </div>
   );
 }
