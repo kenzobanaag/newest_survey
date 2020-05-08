@@ -1,7 +1,25 @@
 import React from 'react'
 import ReactWordcloud from 'react-wordcloud'
 
+import { useSelector } from "react-redux";
+
+
 export default function Visualizer() {
+
+  const wordCloud = useSelector(state => state.analytics.cloudData)
+
+  const clusteredDictionary = []
+
+  const parseClusteredData = () => {
+    if(Object.keys(wordCloud).length > 0)
+      for (var key in wordCloud) {
+        // check if the property/key is defined in the object itself, not in parent
+        wordCloud[key].map(title => clusteredDictionary.push({
+          "text": title,
+          value: 1
+        }))
+      }
+  }
 
   const data = [
     {
@@ -78,10 +96,11 @@ export default function Visualizer() {
         spiral: 'archimedean',
         transitionDuration: 1000,
       }}
-        words={data}
+        words={clusteredDictionary}
         callbacks={{
           onWordClick: e => print(e)
         }} />
+      {parseClusteredData()}
     </div>
   );
 }

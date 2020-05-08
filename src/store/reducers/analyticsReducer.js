@@ -3,7 +3,7 @@ import * as analyticsActions from '../actions/analyticsActions';
 const intialState = {
     responses: [],
     currentSurveyId: "",
-    count: 0,
+    cloudData: []
 }
 
 const reducer = (state = intialState, action) => {
@@ -23,11 +23,11 @@ const reducer = (state = intialState, action) => {
                 ...state,
                 currentSurveyId: action.surveyId
             }
-            case analyticsActions.GET_RESPONSE_COUNT:
-                return {
-                    ...state,
-                    count: state.count + action.responseCount
-                }
+        case analyticsActions.GET_WORDCLOUD:
+            return {
+                ...state,
+                cloudData: action.data
+            }
         default: return state;
     }
 }

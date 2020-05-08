@@ -12,7 +12,11 @@ const useStyles = makeStyles((theme) => ({
     },
     divider: {
         minWidth: 5
-      }
+      },
+      textLeft: {
+        textAlign: "left",
+        marginLeft: theme.spacing(5)
+    }
 }));
 
 export default function StarGraph(props) {
@@ -98,7 +102,7 @@ export default function StarGraph(props) {
         var questionText = "";
         if(question.length > 0) {
             question.map(question => question._id === currentId ? questionText = question.prompt : 0)
-            return <div><Typography variant="h4">{questionText}</Typography><br/></div>
+            return <div><Typography variant="h4" className={classes.textLeft}>{questionText}</Typography><br/></div>
         }
     }
 

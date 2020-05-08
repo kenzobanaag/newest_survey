@@ -118,7 +118,6 @@ export default function SurveyActions(props) {
   const publishSurvey = () => {
     if (window.confirm('You are about to publish this survey, you cannot edit this survey after publishing')) {
       // Save it!
-      console.log('Thing was saved to the database.');
       var filteredObject = {
         ...newSurveyObject,
         published: true

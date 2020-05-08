@@ -10,6 +10,10 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
         justifyContent: "center",
     },
+    textLeft: {
+        textAlign: "left",
+        marginLeft: theme.spacing(5)
+    }
 }));
 
 export default function MultipleChoiceGraph(props) {
@@ -69,7 +73,7 @@ export default function MultipleChoiceGraph(props) {
         var questionText = "";
         if(questions.length > 0) {
             questions.map(question => question._id === currentId ? questionText = question.prompt : 0)
-            return <div><Typography variant="h4">{questionText}</Typography><br/></div>
+            return <div><Typography variant="h4" className={classes.textLeft}>{questionText}</Typography><br/></div>
         }
     }
 

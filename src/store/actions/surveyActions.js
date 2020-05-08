@@ -42,7 +42,6 @@ export const clearSurvey = () => {
 export const saveSurvey = (surveyObject, token) => {
     return dispatch => {
         let survId = "";
-
         //remove this if it causes errors
         if (surveyObject.surveyId === undefined || surveyObject.surveyId === "") {
             const filteredObject = {

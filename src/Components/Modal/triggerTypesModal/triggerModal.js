@@ -38,10 +38,13 @@ export default function TriggerModal(props) {
     }]   */
 
   const updateTrigger = () => {
-    var triggerObject = {
+    var triggerObject = {triggers: [{
       triggerType: document.getElementById("trigger_type").value,
       timer: document.getElementById("trigger_extra").value
-    }
+    }]}
+
+    console.log(triggerObject)
+
     dispatch(createActions.updateTrigger(triggerObject));
     onClose();
   }

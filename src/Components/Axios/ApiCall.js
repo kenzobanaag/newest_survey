@@ -12,6 +12,8 @@ const LOCAL_URL = "https://guerilla-backend.azurewebsites.net/api/";
 
 const LOGIN_URL = "https://guerilla-backend.azurewebsites.net/";
 
+const WORD_CLOUD_URL = "http://127.0.0.1:5000/wordcloud";
+
 const USER = "user/";
 
 const SURVEY = "survey/";
@@ -22,6 +24,9 @@ const EMBED = "embed/";
 
 class ApiCall {
 
+    static getWordCloud(id) {
+        return (axios.get(WORD_CLOUD_URL));
+    }
 
     static login(userObject) {
         return (axios.post(LOGIN_URL + "login/", userObject));

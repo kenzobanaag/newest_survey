@@ -3,7 +3,8 @@ import ApiCalls from '../../Components/Axios/ApiCall'
 export const LOAD_RESPONSES = "LOAD_RESPONSES";
 export const CLEAR_RESPONSES = "CLEAR_RESPONSES";
 export const SET_CURRENT_SURVEY = "SET_CURRENT_SURVEY";
-export const GET_RESPONSE_COUNT = "GET_RESPONSE_COUNT";
+export const GET_WORDCLOUD = "GET_WORDCLOUD";
+
 
 /*
     Called by the analytics page to instantiate the state and populate the 
@@ -19,7 +20,7 @@ export const loadResponses = (id, token) => {
                     answers: element.answers,
                     responseId: element._id
                 }))
-
+                
                 dispatch(saveResponses(responseData));
             }
             //answers array
@@ -30,21 +31,23 @@ export const loadResponses = (id, token) => {
     }
 }
 
-export const getResponseCount = (id, token) => {
+export const getWordCloud = (id) => {
     return dispatch => {
-        ApiCalls.newGetAllSurveyResponses(id, token).then(response => {
-            dispatch(clearResponses());
-            //console.log(response.data.data)
-            if (response.data.result) {
-                dispatch(addResponses(response.data.data.length));
+        ApiCalls.getWordCloud(id).then(response => {
+            //console.log(response)
+            if (response.data) {
+                dispatch(saveWordCloudData(response.data));
             }
-            else {
-                dispatch(addResponses(0));
-            }
-            
         }).catch(error => {
             console.log(error)
         });
+    }
+}
+
+export const saveWordCloudData = (cloudData) => {
+    return {
+        type: GET_WORDCLOUD,
+        data: cloudData
     }
 }
 
@@ -66,12 +69,5 @@ export const setCurrentSurvey = (id) => {
     return {
         type: SET_CURRENT_SURVEY,
         surveyId: id
-    }
-}
-
-export const addResponses = (count) => {
-    return {
-        type: GET_RESPONSE_COUNT,
-        responseCount: count
     }
 }

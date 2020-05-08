@@ -31,6 +31,7 @@ function AnalyticsPage() {
             dispatch(analyticsActions.loadResponses(id, auth));
             dispatch(analyticsActions.setCurrentSurvey(id)); 
             dispatch(surveyActions.loadSurvey(id,auth));
+            dispatch(analyticsActions.getWordCloud("test"));
         }
     }, [])
 
