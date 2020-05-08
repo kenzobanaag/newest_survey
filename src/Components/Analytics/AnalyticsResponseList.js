@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Paper, Tabs, Tab, List, ListItem, Grid } from '@material-ui/core';
+import { Paper, Tabs, Tab, List, ListItem, Grid, Typography } from '@material-ui/core';
 import { useSelector } from 'react-redux'
 import AnalyticsGraph from './AnalyticsVisualizer';
 import { RESPONSE } from './AnalyticsTypeStrings'
@@ -62,7 +62,7 @@ export default function ResponseList() {
 
     //when something is clicked in the graph, we could filter all of these....
     const getItems = () => {
-        if (value === 0 && questions.length > 0) {
+        if (value === 0 && questions.length > 0 && responses.length > 0) {
             //load questions
             //console.log(questions)
             return questions.map((id, index) => (
@@ -87,7 +87,13 @@ export default function ResponseList() {
                     R{index + "-" + response.responseId}
                     </ListItem>))
             }   
-            return null;
+            else{
+                return <div>
+                    <Typography variant="h6" className={classes.grapherMargin}>
+                        Sorry, you dont have responses yet
+                    </Typography>
+                </div>
+            }
         }
     }
 
@@ -109,7 +115,7 @@ export default function ResponseList() {
                         </List>
                     </Paper>
                 </Grid>
-                <Grid item xs={8} className={classes.grapherMargin}>
+                <Grid item xs={8}>
                     {/* pass a prop here when something is selected */}
                     <AnalyticsGraph type={graphType} id={itemId} />
                 </Grid>

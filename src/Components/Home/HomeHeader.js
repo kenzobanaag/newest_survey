@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography';
@@ -10,7 +10,8 @@ import {Link} from 'react-router-dom'
 import LOGO from '../Assets/cap_logo.png'
 
 //redux
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import * as analyticsActions from '../../store/actions/analyticsActions'
 
 
 const useStyles = makeStyles(theme => ({
@@ -39,11 +40,17 @@ const useStyles = makeStyles(theme => ({
 */
 function HomeHeader() {
 
+    //const dispatch = useDispatch();
+
     const classes = useStyles();
 
     const currentUser = useSelector(state => state.user.userEmail);
 
     const surveys = useSelector(state => state.home.surveys);
+
+    //const auth = useSelector(state => state.user.authToken);
+
+    //const responses = useSelector(state => state.analytics.count);
 
     const printStatus= (status) => {
         if(status.length === 0) {
@@ -56,6 +63,32 @@ function HomeHeader() {
             );
         }
     }
+
+    //get active survey count
+    const getActiveSurveys = () => {
+        if(surveys.length > 0) {
+            var activeSurveys = 0;
+            activeSurveys = surveys.filter(item => item.published === "true").length;
+            return activeSurveys;
+        }
+
+        return 0;
+    }
+
+    //get all responses
+    // const getResponseCount = () => {
+    //     if(surveys.length > 0) {
+    //         var responsesL = 0;
+    //         for(var i = 0; i < surveys.length; i++) {
+    //             console.log(surveys[i])
+    //             //dispatch(analyticsActions.getResponseCount(surveys[i]._id, auth));
+    //             //responsesL += responses;
+    //         }
+    //         return responsesL;
+    //     }
+
+    //     return 0;
+    // }
 
     return (
         <Paper className={classes.root}>
@@ -86,10 +119,10 @@ function HomeHeader() {
                             <StatisticsCard title="Total Surveys Created" value={surveys.length} />
                         </Grid>
                         <Grid item xs={4}>
-                            <StatisticsCard title="Total Active Surveys" value="0" />
+                            <StatisticsCard title="Total Active Surveys" value={getActiveSurveys()} />
                         </Grid>
                         <Grid item xs={4}>
-                            <StatisticsCard title="Total Survey Responses" value="0" />
+                            {/* <StatisticsCard title="Total Survey Responses" value={0} /> */}
                         </Grid>
                     </Grid>
                 </div>

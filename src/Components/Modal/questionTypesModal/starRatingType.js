@@ -44,7 +44,7 @@ export default function StarRating(props) {
         <Select
           id="maxStars_text"
           fullWidth
-          defaultValue={choicesArray === undefined ? 5 : choicesArray.maxStars}
+          defaultValue={choicesArray === undefined ? stars : choicesArray.maxStars}
           onClick={e => handleChange(e.target.value)}
         >
           <MenuItem value={3}>3</MenuItem>

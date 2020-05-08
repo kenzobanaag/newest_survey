@@ -9,13 +9,14 @@ export const DELETE_QUESTION = "DELETE_QUESTION";
 export const EDIT_QUESTION = "EDIT_QUESTION";
 export const CLEAR_SURVEY = "CLEAR_SURVEY";
 export const GET_EMBED = "GET_EMBED";
-export const UPDATE_TITLE = "UPDATE_TITLE"
+export const UPDATE_TITLE = "UPDATE_TITLE";
+export const UPDATE_TRIGGER = "UPDATE_TRIGGER";
 
 export const loadSurvey = (id, token) => {
     return dispatch => {
         ApiCalls.newGetASurvey(id, token)
             .then(response => {
-                console.log(response.data.data)
+                //console.log(response.data.data)
                 dispatch(returnSurvey(response.data.data));
             }).catch(error => {
                 console.log(error)
@@ -42,8 +43,13 @@ export const saveSurvey = (surveyObject, token) => {
     return dispatch => {
         let survId = "";
 
+        //remove this if it causes errors
         if (surveyObject.surveyId === undefined || surveyObject.surveyId === "") {
-            ApiCalls.newPostSurvey(surveyObject, token).then(response => {
+            const filteredObject = {
+                ...surveyObject,
+                questions: surveyObject.questions.map(question => filterObject(question))
+            }
+            ApiCalls.newPostSurvey(filteredObject, token).then(response => {
                 survId = response.data.id;
                 alert("Survey saved!")
                 dispatch(loadSurvey(survId, token));
@@ -52,13 +58,15 @@ export const saveSurvey = (surveyObject, token) => {
             })
         }
         else {
-            console.log("Update")
+            //console.log("Update")
             const filteredObject = {
                 ...surveyObject,
                 questions: surveyObject.questions.map(question => filterObject(question))
             }
             ApiCalls.newUpdateSurvey(filteredObject, token).then(response => {
+                survId = response.data.id;
                 alert("Changes saved!")
+                dispatch(loadSurvey(survId, token));
                 //console.log(JSON.stringify(filteredObject))
                 return {
                     type: UPDATE_SURVEY
@@ -104,6 +112,14 @@ const filterObject = (questions) => {
             surveyTitle: title
         }
     }
+
+    export const updateTrigger = (triggerObject) => {
+        return {
+            type: UPDATE_TRIGGER,
+            trigger: triggerObject,
+        }
+    }
+
 
     export const addQuestion = (newQuestion) => {
         return {
@@ -154,3 +170,4 @@ const filterObject = (questions) => {
             }
         }
     }
+

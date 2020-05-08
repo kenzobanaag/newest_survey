@@ -38,7 +38,7 @@ export default function SimpleTabs() {
           className={classes.textfield}
           display="block" 
           gutterBottom>
-            Create. Design. Manage. Meme
+            Create. Design. Manage
           </Typography>
         </Container>
       </AppBar>

@@ -9,11 +9,14 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import {useSelector} from 'react-redux'
+import {useSelector, useDispatch} from 'react-redux'
 import * as triggerStrings from '../triggerTypesModal/triggerTypeStrings'
+import * as createActions from '../../../store/actions/surveyActions'
 
 export default function TriggerModal(props) {
     //probably take in a prop that opens or closes. 
+
+  const dispatch = useDispatch();
 
   const { open, onClose } = props
 
@@ -28,6 +31,19 @@ export default function TriggerModal(props) {
     setDefText("Pop up in x seconds")
     else 
     setDefText("Scroll percentage")
+  }
+  /*triggers : [{
+        triggerType: "TimerTrigger",
+        timer: "10000",
+    }]   */
+
+  const updateTrigger = () => {
+    var triggerObject = {
+      triggerType: document.getElementById("trigger_type").value,
+      timer: document.getElementById("trigger_extra").value
+    }
+    dispatch(createActions.updateTrigger(triggerObject));
+    onClose();
   }
 
   const triggerSetting = useSelector(state => state.create.triggers);
@@ -70,7 +86,7 @@ export default function TriggerModal(props) {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={updateTrigger} color="primary">
             Set Trigger
           </Button>
         </DialogActions>

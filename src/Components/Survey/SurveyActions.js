@@ -78,8 +78,18 @@ export default function SurveyActions(props) {
     setTriggerOpen(false)
   }
 
-  //could be improved....
+  /*
+    Publish - only when unpublished and both content
+    Save    - only when unpublished and content
+    Add     - only when unpublished
+    Trigger - only when unpublished
+    Web Code- only when unpublished and surveyId != null
+  */
+    //could be improved....
   const isPopulated = (surveyObject) => {
+    if(isPublished(surveyObject)) {
+      return true;
+    }
     if(surveyObject.title.length) {
       return false;
     }
@@ -87,6 +97,34 @@ export default function SurveyActions(props) {
       return false;
     }
     return true;
+  }
+
+
+  const canPublish = (surveyObject) => {
+    return !(surveyObject.title.length > 0 && surveyObject.questions.length > 0 && !isPublished(surveyObject))
+  }
+
+
+  //check this!
+  const isPublished = (surveyObject) => {
+      var pub = surveyObject.published
+      if(pub === "true") {
+        return true;
+      }
+
+      return false
+  }
+
+  const publishSurvey = () => {
+    if (window.confirm('You are about to publish this survey, you cannot edit this survey after publishing')) {
+      // Save it!
+      console.log('Thing was saved to the database.');
+      var filteredObject = {
+        ...newSurveyObject,
+        published: true
+      }
+      dispatch(surveyActions.saveSurvey(filteredObject,currentUser));
+    }
   }
 
   return (
@@ -111,7 +149,9 @@ export default function SurveyActions(props) {
             <Typography variant="h6" gutterBottom>
             <ul className={classes.noStyle}>
           <li>Date Created: <span>{newSurveyObject.creationDate}</span></li>
-          <li>Published Status: <span style={{color: 'red'}}>{newSurveyObject.isPublished}</span></li>
+          <li>Published Status: <span 
+          style={newSurveyObject.published === "true" ? {color : "green"} : {color: "red"}}>
+            {newSurveyObject.published}</span></li>
               <li>Survey ID: <span>{newSurveyObject.surveyId}</span></li>
             </ul>
           </Typography>
@@ -124,8 +164,9 @@ export default function SurveyActions(props) {
             variant="contained"
             color="primary"
             size="large"
-            disabled={true}
+            disabled={canPublish(newSurveyObject)}
             className={classes.marginAlign}
+            onClick={() => publishSurvey()}
             >Publish</Button>
             <Button
             variant="contained"
@@ -142,6 +183,7 @@ export default function SurveyActions(props) {
             variant="contained"
             color="secondary"
             size="large"
+            disabled={isPublished(newSurveyObject)}
             className={classes.marginAlign}
             >Add Question
             </Button>
@@ -150,14 +192,14 @@ export default function SurveyActions(props) {
             color="secondary"
             size="large"
             onClick={handleTriggerOpen}
-            disabled={isPopulated(newSurveyObject)}
+            disabled={isPublished(newSurveyObject)}
             className={classes.marginAlign}>Configure Trigger</Button>
             <Button
             variant="contained"
             color="secondary"
             size="large"
             onClick={() => dispatch(surveyActions.getEmbed(newSurveyObject.surveyId))}
-            disabled={isPopulated(newSurveyObject)}
+            disabled={!(newSurveyObject.title.length > 0 && newSurveyObject.questions.length > 0)}
             className={classes.marginAlign}>Get Embeddable Code</Button>
         </Grid>
       </Grid>

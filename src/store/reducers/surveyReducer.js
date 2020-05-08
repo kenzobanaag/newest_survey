@@ -2,7 +2,9 @@ import * as surveyActions from '../actions/surveyActions'
 
 const initialState =  {
     title: "", 
+    published : "false",
     questions : [],
+    surveyId : "",
     triggers : [{
         triggerType: "TimerTrigger",
         timer: "10000",
@@ -30,7 +32,7 @@ const reducer = (state = initialState, action) => {
             ...state,
             title : "",
             creationDate : "",
-            published : "",
+            published : "false",
             surveyId : "",
             questions : [],
         }
@@ -74,6 +76,12 @@ const reducer = (state = initialState, action) => {
                         question = action.newQuestion
                     }
                 })
+            }
+
+        case surveyActions.UPDATE_TRIGGER:
+            return {
+                ...state,
+                triggers: action.trigger
             }
 
         default: return state;

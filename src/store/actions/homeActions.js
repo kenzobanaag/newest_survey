@@ -17,7 +17,7 @@ export const saveSurveys = (surveyVal) => {
 export const loadSurveys = (token) => {
     return dispatch => {
         ApiCalls.newGetAllSurveys(token).then(response => {
-            console.log(response)
+            //console.log(response)
             if(response.data.result) {
                 dispatch(saveSurveys(response.data.data));
             }
@@ -33,7 +33,7 @@ export const loadSurveys = (token) => {
 export const deleteSurvey = (token, id)  => {
     return dispatch => {
         ApiCalls.newDeleteSurvey(token, id).then(response => {
-            console.log(response)
+            //console.log(response)
             if(response.data.result > 0) {
                 dispatch(storeDeletedSurveyId(id));
             }

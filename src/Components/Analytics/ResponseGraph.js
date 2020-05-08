@@ -29,8 +29,7 @@ const useStyles = makeStyles((theme) => ({
     },
     answer: {
         marginLeft: theme.spacing(2)
-    }
-    
+    },
 }));
 
 export default function ResponseGraph(props) {

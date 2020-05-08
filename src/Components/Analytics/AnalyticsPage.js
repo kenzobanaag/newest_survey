@@ -21,6 +21,7 @@ function AnalyticsPage() {
 
     useEffect(() => {
         dispatch(appActions.switchPage(2))
+        dispatch(surveyActions.clearSurvey())
         const url = (window.location.pathname);
         let id = "";
         //this means that there is an id that is loaded.
@@ -29,7 +30,6 @@ function AnalyticsPage() {
             //dispatch to get all survey ids
             dispatch(analyticsActions.loadResponses(id, auth));
             dispatch(analyticsActions.setCurrentSurvey(id)); 
-            dispatch(surveyActions.clearSurvey());
             dispatch(surveyActions.loadSurvey(id,auth));
         }
     }, [])

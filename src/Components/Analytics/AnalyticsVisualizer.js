@@ -4,8 +4,22 @@ import MultipleChoiceGraph from './MultipleChoiceGraph'
 import WordCloudPlaceholder from './CloudVisualizer'
 import StarGraph from './StarRatingGraph'
 import ResponseGraph from './ResponseGraph'
+import { Typography} from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+    innerPrompt: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        color: "#A9A9A9"
+    }
+}));
+
 
 export default function Visualizer(props) {
+
+    const classes = useStyles();
 
     const grapher = (type, id) => {
         switch(type) {
@@ -18,8 +32,14 @@ export default function Visualizer(props) {
             case AnalyticsTypes.TEXTFIELD: 
             return <WordCloudPlaceholder/>
             //probably have this return some text to say that the user should select something
-            default: return <div>Select a question or response</div>;
+            default: return emptyComponent();
         }
+    }
+
+    const emptyComponent = () => {
+        return <div>
+            <Typography variant="h4" className={classes.innerPrompt}>Please select a question or response</Typography>
+        </div>
     }
 
     return(<div>
