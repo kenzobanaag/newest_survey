@@ -16,7 +16,7 @@ export const loadSurvey = (id, token) => {
     return dispatch => {
         ApiCalls.newGetASurvey(id, token)
             .then(response => {
-                //console.log(response.data.data)
+                console.log(response.data.data)
                 dispatch(returnSurvey(response.data.data));
             }).catch(error => {
                 console.log(error)

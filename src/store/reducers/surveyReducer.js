@@ -25,6 +25,7 @@ const reducer = (state = initialState, action) => {
             questions : action.survey.questions.map(element => ({
                 ...element, questionId: element._id, _id: element._id
             })),
+            triggers: action.survey.triggers,
         }
 
         case surveyActions.CLEAR_SURVEY: 
@@ -35,6 +36,10 @@ const reducer = (state = initialState, action) => {
             published : "false",
             surveyId : "",
             questions : [],
+            triggers: [{
+                triggerType: "TimerTrigger",
+                timer: "10000",
+            }]    
         }
 
         case surveyActions.SAVE_SURVEY:

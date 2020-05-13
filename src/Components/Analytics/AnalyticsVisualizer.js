@@ -1,7 +1,7 @@
 import React from 'react'
 import * as AnalyticsTypes from './AnalyticsTypeStrings'
 import MultipleChoiceGraph from './MultipleChoiceGraph'
-//import WordCloudPlaceholder from './CloudVisualizer'
+import WordCloudPlaceholder from './CloudVisualizer'
 import ClusterVisualizer from './ClusterVisualizer'
 import StarGraph from './StarRatingGraph'
 import ResponseGraph from './ResponseGraph'
@@ -31,7 +31,7 @@ export default function Visualizer(props) {
             case AnalyticsTypes.MULTIPLE: 
             return <MultipleChoiceGraph choiceId={id}/>
             case AnalyticsTypes.TEXTFIELD: 
-            return <ClusterVisualizer choiceId={id}/>
+            return <WordCloudPlaceholder choiceId={id}/>
             //probably have this return some text to say that the user should select something
             default: return emptyComponent();
         }

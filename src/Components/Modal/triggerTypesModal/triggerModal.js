@@ -16,6 +16,8 @@ import * as createActions from '../../../store/actions/surveyActions'
 export default function TriggerModal(props) {
     //probably take in a prop that opens or closes. 
 
+  const triggerSetting = useSelector(state => state.create.triggers);
+
   const dispatch = useDispatch();
 
   const { open, onClose } = props
@@ -31,17 +33,30 @@ export default function TriggerModal(props) {
     setDefText("Pop up in x seconds")
     else 
     setDefText("Scroll percentage")
+
+    triggerSetting[0] = {
+      ...triggerSetting[0],
+      triggerType: val
+    }
   }
-  /*triggers : [{
-        triggerType: "TimerTrigger",
-        timer: "10000",
-    }]   */
 
   const updateTrigger = () => {
-    var triggerObject = {triggers: [{
-      triggerType: document.getElementById("trigger_type").value,
-      timer: document.getElementById("trigger_extra").value
-    }]}
+
+    var triggerObject; 
+    console.log(triggerObject)
+
+    if(triggerSetting[0].triggerType === triggerStrings.SCROLL)
+      triggerObject = [{
+        triggerType: document.getElementById("trigger_type").value,
+        scrollPercent: document.getElementById("trigger_extra").value,
+        _id : triggerSetting[0]._id === undefined ? null : triggerSetting[0]._id
+      }]
+    else 
+      triggerObject = [{
+        triggerType: document.getElementById("trigger_type").value,
+        timer: (document.getElementById("trigger_extra").value * 1000),
+        _id : triggerSetting[0]._id === undefined ? null : triggerSetting[0]._id
+      }]
 
     console.log(triggerObject)
 
@@ -49,7 +64,14 @@ export default function TriggerModal(props) {
     onClose();
   }
 
-  const triggerSetting = useSelector(state => state.create.triggers);
+  const getTriggerValue = () => {
+    if(triggerSetting[0].triggerType === triggerStrings.SCROLL)
+      return triggerSetting[0].scrollPercent
+    else
+      return triggerSetting[0].timer/1000
+  }
+
+  
 
     return (<div>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
@@ -61,7 +83,7 @@ export default function TriggerModal(props) {
           <Select
             fullWidth
             autoFocus
-            defaultValue={triggerSetting === undefined ? triggerStrings.TIMER : triggerStrings.TIMER}
+            defaultValue={triggerSetting[0] === null ? triggerStrings.TIMER: triggerSetting[0].triggerType}
             id='trigger_type_select'
             inputProps={{
                 name: 'trigger_type',
@@ -79,9 +101,9 @@ export default function TriggerModal(props) {
           id="trigger_extra"
           label={defText}
           fullWidth
-          defaultValue={10}
+          defaultValue={triggerSetting[0] === null ? 10 : getTriggerValue()}
           inputProps = {{
-            maxLength: 2,
+            maxLength: 3,
           }}
           />
         </DialogContent>

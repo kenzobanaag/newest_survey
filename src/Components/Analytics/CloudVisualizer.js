@@ -21,6 +21,37 @@ export default function Visualizer() {
       }
   }
 
+  const dataList = [];
+
+  const clusteredData = {
+    "10": 1,
+    "15": 1,
+    "architecture": 1,
+    "attentive": 1,
+    "attitude": 1,
+    "bad": 1,
+    "bed": 1,
+    "bet": 1,
+    "better": 1,
+    "boutique": 1,
+    "breakfast": 1,
+    "bumpy": 1,
+    "chain": 1,
+    "charge": 1,
+    "cheap": 1
+}
+  
+  const dataStuff = () => {
+    if(Object.keys(clusteredData).length > 0)
+      for (var key in clusteredData) {
+        dataList.push({
+          "text": key,
+          value: clusteredData[key]
+        })
+      }
+  }
+  
+
   const data = [
     {
       value: 39,
@@ -96,11 +127,11 @@ export default function Visualizer() {
         spiral: 'archimedean',
         transitionDuration: 1000,
       }}
-        words={clusteredDictionary}
+        words={dataList}
         callbacks={{
           onWordClick: e => print(e)
         }} />
-      {parseClusteredData()}
+      {dataStuff()}
     </div>
   );
 }
